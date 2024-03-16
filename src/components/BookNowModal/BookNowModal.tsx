@@ -21,17 +21,27 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useBookNowModal } from "@/Contexts/BookNowModal";
-
+import { Textarea } from "../ui/textarea";
+interface FormData {
+  firstName: string;
+  lastName: string;
+  university: string;
+  major: string;
+  description: string;
+  startAtDate?: Date | undefined;
+  deadLineDate?: Date | undefined;
+}
+const initialFormData: FormData = {
+  firstName: "",
+  lastName: "",
+  university: "",
+  major: "",
+  description: "",
+  startAtDate: undefined,
+  deadLineDate: undefined,
+};
 function BookNowModal() {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    university: "",
-    major: "",
-    description: "",
-    startAtDate: undefined,
-    deadLineDate: undefined,
-  });
+  const [formData, setFormData] = useState<FormData>(initialFormData);
 
   const [errors, setErrors] = useState({
     firstName: "",
@@ -46,7 +56,10 @@ function BookNowModal() {
   const { openBookNowModal, setOpenBookNowModal } = useBookNowModal();
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -114,10 +127,8 @@ function BookNowModal() {
       return;
     }
 
-    // Submit logic here
     console.log("Form submitted:", formData);
 
-    // Reset form
     setFormData({
       firstName: "",
       lastName: "",
@@ -127,9 +138,6 @@ function BookNowModal() {
       startAtDate: undefined,
       deadLineDate: undefined,
     });
-
-    // Reload the page
-    window.location.reload();
   };
 
   return (
@@ -144,7 +152,7 @@ function BookNowModal() {
             <Input
               name="firstName"
               value={formData.firstName}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e)}
               placeholder="الاسم الأول"
               dir="rtl"
               className="m-2"
@@ -156,7 +164,7 @@ function BookNowModal() {
             <Input
               name="lastName"
               value={formData.lastName}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e)}
               placeholder="اسم العائلة"
               dir="rtl"
               className="m-2"
@@ -168,7 +176,7 @@ function BookNowModal() {
             <Input
               name="university"
               value={formData.university}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e)}
               placeholder="اسم الجامعة"
               dir="rtl"
               className="m-2"
@@ -181,7 +189,7 @@ function BookNowModal() {
               className="flex justify-end m2 border border-1 p-1"
               name="major"
               value={formData.major}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e)}
               dir="rtl"
             >
               <option value="">اختر التخصص</option>
@@ -191,15 +199,15 @@ function BookNowModal() {
             <span dir="rtl" className="text-red-500">
               {errors.major}
             </span>
-
-            <textarea
+            <Textarea
               name="description"
               value={formData.description}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e)}
               placeholder="وصف"
               dir="rtl"
               className="mt-2 mb-2 border border-1"
-            ></textarea>
+            ></Textarea>
+
             <span dir="rtl" className="text-red-500">
               {errors.description}
             </span>
