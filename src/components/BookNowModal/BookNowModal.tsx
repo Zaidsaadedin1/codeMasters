@@ -1,130 +1,293 @@
-"use client";
-
 import * as React from "react";
+import { useState } from "react";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Input } from "../ui/input";
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-import { Input } from "../ui/input";
-import { useState } from "react";
 import { useBookNowModal } from "@/Contexts/BookNowModal";
+
 function BookNowModal() {
-  const [startAtDate, setStartAtDate] = useState<Date>();
-  const [deadLineDate, setDeadLineDate] = useState<Date>();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    university: "",
+    major: "",
+    description: "",
+    startAtDate: undefined,
+    deadLineDate: undefined,
+  });
+
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    university: "",
+    major: "",
+    description: "",
+    startAtDate: "",
+    deadLineDate: "",
+  });
+
   const { openBookNowModal, setOpenBookNowModal } = useBookNowModal();
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: "" });
+  };
+
+  const handleDateSelect = (
+    date: Date,
+    field: "startAtDate" | "deadLineDate"
+  ) => {
+    setFormData({ ...formData, [field]: date });
+    setErrors({ ...errors, [field]: "" });
+  };
+
+  const handleSubmit = () => {
+    let hasErrors = false;
+
+    const newErrors = {
+      firstName: "",
+      lastName: "",
+      university: "",
+      major: "",
+      description: "",
+      startAtDate: "",
+      deadLineDate: "",
+    };
+
+    if (!formData.firstName) {
+      newErrors.firstName = "يرجى إدخال الاسم الأول.";
+      hasErrors = true;
+    }
+
+    if (!formData.lastName) {
+      newErrors.lastName = "يرجى إدخال اسم العائلة.";
+      hasErrors = true;
+    }
+
+    if (!formData.university) {
+      newErrors.university = "يرجى إدخال اسم الجامعة.";
+      hasErrors = true;
+    }
+
+    if (!formData.major) {
+      newErrors.major = "يرجى اختيار التخصص.";
+      hasErrors = true;
+    }
+
+    if (!formData.description) {
+      newErrors.description = "يرجى إدخال وصف.";
+      hasErrors = true;
+    }
+
+    if (!formData.startAtDate) {
+      newErrors.startAtDate = "يرجى اختيار تاريخ البدء.";
+      hasErrors = true;
+    }
+
+    if (!formData.deadLineDate) {
+      newErrors.deadLineDate = "يرجى اختيار تاريخ الموعد النهائي.";
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Submit logic here
+    console.log("Form submitted:", formData);
+
+    // Reset form
+    setFormData({
+      firstName: "",
+      lastName: "",
+      university: "",
+      major: "",
+      description: "",
+      startAtDate: undefined,
+      deadLineDate: undefined,
+    });
+
+    // Reload the page
+    window.location.reload();
+  };
 
   return (
     <>
-      <Drawer open={openBookNowModal}>
-        <DrawerTrigger asChild>
-          <Button variant="outline">Book Now</Button>
-        </DrawerTrigger>
-        <DrawerContent>
-          <div className="mx-auto w-full max-w-sm">
-            <DrawerHeader>
-              <DrawerTitle>Assest Form</DrawerTitle>
-              <DrawerDescription>
-                Fill This Form To request A Help In Your Projects
-              </DrawerDescription>
-            </DrawerHeader>
-          </div>
-          <div>
-            {" "}
-            <Input />
-            <Input />
-            <Input />
-            <Input />
-            <Input />
-            <div>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-[280px] justify-start text-left font-normal",
-                      !startAtDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {startAtDate ? (
-                      format(startAtDate, "PPP")
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={startAtDate}
-                    onSelect={setStartAtDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-[280px] justify-start text-left font-normal",
-                      !deadLineDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {deadLineDate ? (
-                      format(deadLineDate, "PPP")
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={deadLineDate}
-                    onSelect={setDeadLineDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
-          <DrawerFooter>
-            <Button>Book Now</Button>
-            <DrawerClose asChild>
-              <Button
-                onClick={() => setOpenBookNowModal(!openBookNowModal)}
-                variant="outline"
-              >
-                Cancel
-              </Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+      <div className="h-min-[300px] w-min-[100%]">
+        <Drawer open={openBookNowModal} onOpenChange={setOpenBookNowModal}>
+          <DrawerTrigger asChild>
+            <Button variant="outline">احجز الآن</Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            {/* Form inputs */}
+            <Input
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              placeholder="الاسم الأول"
+              dir="rtl"
+              className="m-2"
+            />
+            <span dir="rtl" className="text-red-500">
+              {errors.firstName}
+            </span>
+
+            <Input
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleInputChange}
+              placeholder="اسم العائلة"
+              dir="rtl"
+              className="m-2"
+            />
+            <span dir="rtl" className="text-red-500">
+              {errors.lastName}
+            </span>
+
+            <Input
+              name="university"
+              value={formData.university}
+              onChange={handleInputChange}
+              placeholder="اسم الجامعة"
+              dir="rtl"
+              className="m-2"
+            />
+            <span dir="rtl" className="text-red-500">
+              {errors.university}
+            </span>
+
+            <select
+              className="flex justify-end m2 border border-1 p-1"
+              name="major"
+              value={formData.major}
+              onChange={handleInputChange}
+              dir="rtl"
+            >
+              <option value="">اختر التخصص</option>
+              <option value="علوم الحاسوب">علوم الحاسوب</option>
+              <option value="الهندسة">الهندسة</option>
+            </select>
+            <span dir="rtl" className="text-red-500">
+              {errors.major}
+            </span>
+
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              placeholder="وصف"
+              dir="rtl"
+              className="mt-2 mb-2 border border-1"
+            ></textarea>
+            <span dir="rtl" className="text-red-500">
+              {errors.description}
+            </span>
+
+            {/* Date selection */}
+            <section className="flex flex-row justify-end">
+              <div className="m-2 flex flex-col">
+                <Popover>
+                  <PopoverTrigger asChild dir="rtl">
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[280px] justify-start text-left font-normal",
+                        !formData.startAtDate && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {formData.startAtDate ? (
+                        format(formData.startAtDate, "PPP")
+                      ) : (
+                        <span>تاريخ بداية المشروع </span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={formData.startAtDate}
+                      onSelect={(date) => handleDateSelect(date, "startAtDate")}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <span dir="rtl" className="text-red-500">
+                  {errors.startAtDate}
+                </span>
+              </div>
+              <div className="m-2 flex flex-col">
+                <Popover>
+                  <PopoverTrigger asChild dir="rtl">
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[280px] justify-start text-left font-normal",
+                        !formData.deadLineDate && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {formData.deadLineDate ? (
+                        format(formData.deadLineDate, "PPP")
+                      ) : (
+                        <span>تاريخ تسليم المشروع </span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={formData.deadLineDate}
+                      onSelect={(date) =>
+                        handleDateSelect(date, "deadLineDate")
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <span dir="rtl" className="text-red-500">
+                  {errors.deadLineDate}
+                </span>
+              </div>
+            </section>
+            {/* Form actions */}
+            <DrawerFooter>
+              <Button onClick={handleSubmit}>قدم طلب</Button>
+              <DrawerClose asChild>
+                <Button
+                  onClick={() => setOpenBookNowModal(!openBookNowModal)}
+                  variant="outline"
+                >
+                  إلغاء
+                </Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      </div>
     </>
   );
 }
+
 export default BookNowModal;
