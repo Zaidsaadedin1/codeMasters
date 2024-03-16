@@ -1,22 +1,21 @@
-"use client";
 import React, { useState } from "react";
 import Card from "./Card/Card";
-
+import Image from "next/image";
 interface CardData {
   src: string;
   text: string;
 }
 
 function ListOfCards() {
-  const [cards, setCards] = useState<CardData[]>([
-    { src: "website-image1.jpg", text: "Website Card 1" },
-    { src: "website-image2.jpg", text: "Website Card 2" },
-    { src: "website-image3.jpg", text: "Website Card 3" },
+  const [cards] = useState<CardData[]>([
+    { src: "/ios.png", text: "IOS تطبيق هاتف " },
+    { src: "/Web.png", text: "موقع الكتروني" },
+    { src: "/android.png", text: "Android تطبيق هاتف " },
   ]);
 
   return (
     <>
-      <section className="flex flex-row justify-around  mt-60">
+      <section className="  m-0 flex flex-row justify-around flex-wrap  w-min-[480px]">
         {cards.map((card, index) => (
           <Card key={index} src={card.src} text={card.text} />
         ))}
