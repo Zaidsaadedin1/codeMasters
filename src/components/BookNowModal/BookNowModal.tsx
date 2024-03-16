@@ -142,12 +142,12 @@ function BookNowModal() {
 
   return (
     <>
-      <div className="h-min-[300px] w-min-[100%]">
+      <div className="h-full  w-full m">
         <Drawer open={openBookNowModal} onOpenChange={setOpenBookNowModal}>
           <DrawerTrigger asChild>
             <Button variant="outline">احجز الآن</Button>
           </DrawerTrigger>
-          <DrawerContent>
+          <DrawerContent className="p-3">
             {/* Form inputs */}
             <Input
               name="firstName"
@@ -155,7 +155,7 @@ function BookNowModal() {
               onChange={(e) => handleInputChange(e)}
               placeholder="الاسم الأول"
               dir="rtl"
-              className="m-2"
+              className="mt-2 p-2"
             />
             <span dir="rtl" className="text-red-500">
               {errors.firstName}
@@ -167,7 +167,7 @@ function BookNowModal() {
               onChange={(e) => handleInputChange(e)}
               placeholder="اسم العائلة"
               dir="rtl"
-              className="m-2"
+              className="mt-2 p-2"
             />
             <span dir="rtl" className="text-red-500">
               {errors.lastName}
@@ -179,14 +179,14 @@ function BookNowModal() {
               onChange={(e) => handleInputChange(e)}
               placeholder="اسم الجامعة"
               dir="rtl"
-              className="m-2"
+              className="mt-2 p-2"
             />
             <span dir="rtl" className="text-red-500">
               {errors.university}
             </span>
 
             <select
-              className="flex justify-end m2 border border-1 p-1"
+              className="flex justify-end border border-1 mt-2 p-2"
               name="major"
               value={formData.major}
               onChange={(e) => handleInputChange(e)}
@@ -203,9 +203,9 @@ function BookNowModal() {
               name="description"
               value={formData.description}
               onChange={(e) => handleInputChange(e)}
-              placeholder="وصف"
+              placeholder="الوصف"
               dir="rtl"
-              className="mt-2 mb-2 border border-1"
+              className="mt-2 mb-2 p-4 border border-black flex items-center"
             ></Textarea>
 
             <span dir="rtl" className="text-red-500">
@@ -213,10 +213,10 @@ function BookNowModal() {
             </span>
 
             {/* Date selection */}
-            <section className="flex flex-row justify-end">
-              <div className="m-2 flex flex-col">
+            <section dir="rtl" className="flex flex-col  justify-end ">
+              <div className=" mt-2 flex flex-col">
                 <Popover>
-                  <PopoverTrigger asChild dir="rtl">
+                  <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
                       className={cn(
@@ -245,7 +245,7 @@ function BookNowModal() {
                   {errors.startAtDate}
                 </span>
               </div>
-              <div className="m-2 flex flex-col">
+              <div className="mt-2 flex flex-col">
                 <Popover>
                   <PopoverTrigger asChild dir="rtl">
                     <Button
