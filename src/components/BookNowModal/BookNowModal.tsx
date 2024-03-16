@@ -67,7 +67,7 @@ function BookNowModal() {
   };
 
   const handleDateSelect = (
-    date: Date,
+    date: Date | undefined,
     field: "startAtDate" | "deadLineDate"
   ) => {
     setFormData({ ...formData, [field]: date });
