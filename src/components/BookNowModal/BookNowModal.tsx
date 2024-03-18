@@ -27,7 +27,7 @@ interface FormData {
   lastName: string;
   university: string;
   major: string;
-  phoneNumber: number;
+  phoneNumber: string;
   description: string;
   startAtDate?: Date | undefined;
   deadLineDate?: Date | undefined;
@@ -37,7 +37,7 @@ const initialFormData: FormData = {
   lastName: "",
   university: "",
   major: "",
-  phoneNumber: 0,
+  phoneNumber: "",
   description: "",
   startAtDate: undefined,
   deadLineDate: undefined,
@@ -115,9 +115,9 @@ function BookNowModal() {
       hasErrors = true;
     }
     if (
-      isNaN(formData.phoneNumber) ||
-      formData.phoneNumber < 10 ||
-      formData.phoneNumber > 10
+      isNaN(parseInt(formData.phoneNumber)) ||
+      formData.phoneNumber.length < 10 ||
+      formData.phoneNumber.length > 10
     ) {
       newErrors.phoneNumber = "يرجى ادخال رقم الهاتف كرقم وان يكون من 10 خانات";
       hasErrors = true;
@@ -149,7 +149,7 @@ function BookNowModal() {
       lastName: "",
       university: "",
       major: "",
-      phoneNumber: 0,
+      phoneNumber: "",
       description: "",
       startAtDate: undefined,
       deadLineDate: undefined,
@@ -158,12 +158,12 @@ function BookNowModal() {
 
   return (
     <>
-      <div className="flex m-[30px]">
+      <div className="flex ">
         <Drawer open={openBookNowModal} onOpenChange={setOpenBookNowModal}>
           <DrawerTrigger asChild>
             <Button variant="outline">احجز الآن</Button>
           </DrawerTrigger>
-          <DrawerContent className="p-2 w-max-[300px] h-max-[500px] flex justify-center">
+          <DrawerContent className="p-3">
             {/* Form inputs */}
             <Input
               name="firstName"
