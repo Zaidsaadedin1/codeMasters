@@ -27,6 +27,7 @@ interface FormData {
   lastName: string;
   university: string;
   major: string;
+  phoneNumber: number;
   description: string;
   startAtDate?: Date | undefined;
   deadLineDate?: Date | undefined;
@@ -36,6 +37,7 @@ const initialFormData: FormData = {
   lastName: "",
   university: "",
   major: "",
+  phoneNumber: 0,
   description: "",
   startAtDate: undefined,
   deadLineDate: undefined,
@@ -48,6 +50,7 @@ function BookNowModal() {
     lastName: "",
     university: "",
     major: "",
+    phoneNumber: "",
     description: "",
     startAtDate: "",
     deadLineDate: "",
@@ -82,6 +85,7 @@ function BookNowModal() {
       lastName: "",
       university: "",
       major: "",
+      phoneNumber: "",
       description: "",
       startAtDate: "",
       deadLineDate: "",
@@ -106,7 +110,18 @@ function BookNowModal() {
       newErrors.major = "يرجى اختيار التخصص.";
       hasErrors = true;
     }
-
+    if (!formData.phoneNumber) {
+      newErrors.phoneNumber = "يرجى ادخال رقم الهاتف";
+      hasErrors = true;
+    }
+    if (
+      isNaN(formData.phoneNumber) ||
+      formData.phoneNumber < 10 ||
+      formData.phoneNumber > 10
+    ) {
+      newErrors.phoneNumber = "يرجى ادخال رقم الهاتف كرقم وان يكون من 10 خانات";
+      hasErrors = true;
+    }
     if (!formData.description) {
       newErrors.description = "يرجى إدخال وصف.";
       hasErrors = true;
@@ -134,6 +149,7 @@ function BookNowModal() {
       lastName: "",
       university: "",
       major: "",
+      phoneNumber: 0,
       description: "",
       startAtDate: undefined,
       deadLineDate: undefined,
@@ -142,12 +158,12 @@ function BookNowModal() {
 
   return (
     <>
-      <div className="h-full  w-full m">
+      <div className="flex m-[30px]">
         <Drawer open={openBookNowModal} onOpenChange={setOpenBookNowModal}>
           <DrawerTrigger asChild>
             <Button variant="outline">احجز الآن</Button>
           </DrawerTrigger>
-          <DrawerContent className="p-3">
+          <DrawerContent className="p-2 w-max-[300px] h-max-[500px] flex justify-center">
             {/* Form inputs */}
             <Input
               name="firstName"
@@ -183,6 +199,20 @@ function BookNowModal() {
             />
             <span dir="rtl" className="text-red-500">
               {errors.university}
+            </span>
+
+            <Input
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={(e) => {
+                handleInputChange(e);
+              }}
+              placeholder="رقم الهاتف"
+              dir="rtl"
+              className="mt-2 p-2"
+            />
+            <span dir="rtl" className="text-red-500">
+              {errors.phoneNumber}
             </span>
 
             <select

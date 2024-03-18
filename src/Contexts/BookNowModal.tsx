@@ -1,17 +1,14 @@
 import React, { createContext, useContext, useState } from "react";
 
-// Define a type for the context value
 interface BookNowModalContextType {
   openBookNowModal: boolean;
   setOpenBookNowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-// Create the context
 const BookNowModalContext = createContext<BookNowModalContextType | undefined>(
   undefined
 );
 
-// Create a custom hook to use the context
 export const useBookNowModal = () => {
   const context = useContext(BookNowModalContext);
   if (!context) {
@@ -19,17 +16,15 @@ export const useBookNowModal = () => {
       "useBookNowModal must be used within a BookNowModalProvider"
     );
   }
-  return context;   
+  return context;
 };
 interface Props {
   children: React.ReactNode;
 }
 
-// Create a provider component
 export const BookNowModalProvider: React.FC<Props> = ({ children }) => {
   const [openBookNowModal, setOpenBookNowModal] = useState<boolean>(false);
 
-  // Wrap the children with the context provider
   return (
     <BookNowModalContext.Provider
       value={{ openBookNowModal, setOpenBookNowModal }}
