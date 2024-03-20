@@ -1,20 +1,20 @@
 import * as React from "react";
 import { useState } from "react";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "../ui/input";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Popover,
   PopoverContent,
@@ -22,29 +22,32 @@ import {
 } from "@/components/ui/popover";
 import { useBookNowModal } from "@/Contexts/BookNowModal";
 import { Textarea } from "../ui/textarea";
-interface FormData {
-  firstName: string;
-  lastName: string;
-  university: string;
-  major: string;
-  phoneNumber: string;
-  description: string;
-  startAtDate?: Date | undefined;
-  deadLineDate?: Date | undefined;
+import { CreateOrder } from "@/Interfaces/Order/CreateOrderInterface";
+import { fetchData } from "@/Apis/Apis";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { useAlertData } from "@/Contexts/AlertData";
+import { useAlertModal } from "@/Contexts/AlertContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+interface AlertData {
+  alertDescription: string;
+  alertTitle: string;
 }
-const initialFormData: FormData = {
-  firstName: "",
-  lastName: "",
-  university: "",
-  major: "",
-  phoneNumber: "",
-  description: "",
-  startAtDate: undefined,
-  deadLineDate: undefined,
-};
 function BookNowModal() {
-  const [formData, setFormData] = useState<FormData>(initialFormData);
-
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [university, setUniversity] = useState("");
+  const [major, setMajor] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("07");
+  const [description, setDescription] = useState("");
+  const [startAtDate, setStartAtDate] = useState<Date | undefined>();
+  const [deadLineDate, setDeadLineDate] = useState<Date | undefined>();
   const [errors, setErrors] = useState({
     firstName: "",
     lastName: "",
@@ -55,31 +58,11 @@ function BookNowModal() {
     startAtDate: "",
     deadLineDate: "",
   });
-
   const { openBookNowModal, setOpenBookNowModal } = useBookNowModal();
+  const { alertData, setAlertData } = useAlertData();
+  const { setAlertModal } = useAlertModal();
 
-  const handleInputChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-      | React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: "" });
-  };
-
-  const handleDateSelect = (
-    date: Date | undefined,
-    field: "startAtDate" | "deadLineDate"
-  ) => {
-    setFormData({ ...formData, [field]: date });
-    setErrors({ ...errors, [field]: "" });
-  };
-
-  const handleSubmit = () => {
-    let hasErrors = false;
-
+  const handleSubmit = async () => {
     const newErrors = {
       firstName: "",
       lastName: "",
@@ -91,238 +74,316 @@ function BookNowModal() {
       deadLineDate: "",
     };
 
-    if (!formData.firstName) {
+    if (!firstName) {
       newErrors.firstName = "يرجى إدخال الاسم الأول.";
-      hasErrors = true;
     }
 
-    if (!formData.lastName) {
+    if (!lastName) {
       newErrors.lastName = "يرجى إدخال اسم العائلة.";
-      hasErrors = true;
     }
 
-    if (!formData.university) {
+    if (!university) {
       newErrors.university = "يرجى إدخال اسم الجامعة.";
-      hasErrors = true;
     }
 
-    if (!formData.major) {
+    if (!major) {
       newErrors.major = "يرجى اختيار التخصص.";
-      hasErrors = true;
     }
-    if (!formData.phoneNumber) {
+
+    if (!phoneNumber) {
       newErrors.phoneNumber = "يرجى ادخال رقم الهاتف";
-      hasErrors = true;
+    } else if (isNaN(parseInt(phoneNumber)) || phoneNumber.length > 10) {
+      newErrors.phoneNumber = "يرجى ادخال رقم الهاتف  وان يكون من 10 خانات";
     }
-    if (
-      isNaN(parseInt(formData.phoneNumber)) ||
-      formData.phoneNumber.length < 10 ||
-      formData.phoneNumber.length > 10
-    ) {
-      newErrors.phoneNumber = "يرجى ادخال رقم الهاتف كرقم وان يكون من 10 خانات";
-      hasErrors = true;
-    }
-    if (!formData.description) {
+
+    if (!description) {
       newErrors.description = "يرجى إدخال وصف.";
-      hasErrors = true;
     }
 
-    if (!formData.startAtDate) {
+    if (!startAtDate) {
       newErrors.startAtDate = "يرجى اختيار تاريخ البدء.";
-      hasErrors = true;
     }
 
-    if (!formData.deadLineDate) {
+    if (!deadLineDate) {
       newErrors.deadLineDate = "يرجى اختيار تاريخ الموعد النهائي.";
-      hasErrors = true;
     }
 
-    if (hasErrors) {
+    if (Object.values(newErrors).every((error) => !error)) {
+      const newOrder: CreateOrder = {
+        firstName,
+        lastName,
+        university,
+        major,
+        phoneNumber,
+        description,
+        createAt: new Date(),
+        startAtDate: startAtDate,
+        deadLineDate: deadLineDate,
+      };
+      try {
+        const res = await fetchData.addOrder(newOrder);
+        if (res.status === 200) {
+          setOpenBookNowModal(false);
+          setAlertData({
+            alertDescription: " تم تقديم الطلب بنجاح",
+            alertTitle: "تم ",
+          });
+          setAlertModal(true);
+        } else {
+          setOpenBookNowModal(false);
+          setAlertData({
+            alertDescription: "حدث خطأ غير متوقع: " + res.status,
+            alertTitle: "خطأ",
+          });
+          setAlertModal(true);
+        }
+      } catch (error) {
+        setOpenBookNowModal(false);
+        console.error("حدث خطأ أثناء إضافة الطلب:", error);
+        setAlertData({
+          alertDescription: "حدث خطأ أثناء إضافة الطلب: ",
+          alertTitle: "خطأ",
+        });
+        setAlertModal(true);
+      }
+
+      setFirstName("");
+      setLastName("");
+      setUniversity("");
+      setMajor("");
+      setPhoneNumber("");
+      setDescription("");
+      setStartAtDate(undefined);
+      setDeadLineDate(undefined);
       setErrors(newErrors);
-      return;
+    } else {
+      setErrors(newErrors);
     }
-
-    console.log("Form submitted:", formData);
-
-    setFormData({
-      firstName: "",
-      lastName: "",
-      university: "",
-      major: "",
-      phoneNumber: "",
-      description: "",
-      startAtDate: undefined,
-      deadLineDate: undefined,
-    });
   };
 
   return (
     <>
-      <div className="flex ">
-        <Drawer open={openBookNowModal} onOpenChange={setOpenBookNowModal}>
-          <DrawerTrigger asChild>
+      <div className="w-max-500 h-screen">
+        <Dialog open={openBookNowModal}>
+          <DialogTrigger asChild>
             <Button variant="outline">احجز الآن</Button>
-          </DrawerTrigger>
-          <DrawerContent className="p-3">
-            {/* Form inputs */}
-            <Input
-              name="firstName"
-              value={formData.firstName}
-              onChange={(e) => handleInputChange(e)}
-              placeholder="الاسم الأول"
-              dir="rtl"
-              className="mt-2 p-2"
-            />
-            <span dir="rtl" className="text-red-500">
-              {errors.firstName}
-            </span>
-
-            <Input
-              name="lastName"
-              value={formData.lastName}
-              onChange={(e) => handleInputChange(e)}
-              placeholder="اسم العائلة"
-              dir="rtl"
-              className="mt-2 p-2"
-            />
-            <span dir="rtl" className="text-red-500">
-              {errors.lastName}
-            </span>
-
-            <Input
-              name="university"
-              value={formData.university}
-              onChange={(e) => handleInputChange(e)}
-              placeholder="اسم الجامعة"
-              dir="rtl"
-              className="mt-2 p-2"
-            />
-            <span dir="rtl" className="text-red-500">
-              {errors.university}
-            </span>
-
-            <Input
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={(e) => {
-                handleInputChange(e);
+          </DialogTrigger>
+          <div>
+            <DialogContent
+              style={{
+                padding: "0.75rem",
+                maxWidth: "100vh",
+                maxHeight: "100vh",
+                overflowY: "auto",
               }}
-              placeholder="رقم الهاتف"
-              dir="rtl"
-              className="mt-2 p-2"
-            />
-            <span dir="rtl" className="text-red-500">
-              {errors.phoneNumber}
-            </span>
-
-            <select
-              className="flex justify-end border border-1 mt-2 p-2"
-              name="major"
-              value={formData.major}
-              onChange={(e) => handleInputChange(e)}
-              dir="rtl"
             >
-              <option value="">اختر التخصص</option>
-              <option value="علوم الحاسوب">علوم الحاسوب</option>
-              <option value="الهندسة">الهندسة</option>
-            </select>
-            <span dir="rtl" className="text-red-500">
-              {errors.major}
-            </span>
-            <Textarea
-              name="description"
-              value={formData.description}
-              onChange={(e) => handleInputChange(e)}
-              placeholder="الوصف"
-              dir="rtl"
-              className="mt-2 mb-2 p-4 border border-black flex items-center"
-            ></Textarea>
+              {/* Form inputs */}
+              <input
+                name="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="الاسم الأول"
+                dir="rtl"
+                className="mt-2 p-2"
+              />
+              <span dir="rtl" className="text-red-500">
+                {errors.firstName}
+              </span>
 
-            <span dir="rtl" className="text-red-500">
-              {errors.description}
-            </span>
+              <input
+                name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="اسم العائلة"
+                dir="rtl"
+                className="mt-2 p-2"
+              />
+              <span dir="rtl" className="text-red-500">
+                {errors.lastName}
+              </span>
 
-            {/* Date selection */}
-            <section dir="rtl" className="flex flex-col  justify-end ">
-              <div className=" mt-2 flex flex-col">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[280px] justify-start text-left font-normal",
-                        !formData.startAtDate && "text-muted-foreground"
-                      )}
+              <input
+                name="university"
+                value={university}
+                onChange={(e) => setUniversity(e.target.value)}
+                placeholder="اسم الجامعة"
+                dir="rtl"
+                className="mt-2 p-2"
+              />
+              <span dir="rtl" className="text-red-500">
+                {errors.university}
+              </span>
+
+              <input
+                name="phoneNumber"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="رقم الهاتف"
+                dir="rtl"
+                className="mt-2 p-2"
+              />
+              <span dir="rtl" className="text-red-500">
+                {errors.phoneNumber}
+              </span>
+
+              <select
+                className="flex justify-end border border-1 mt-2 p-2"
+                name="major"
+                value={major}
+                onChange={(e) => setMajor(e.target.value)}
+                dir="rtl"
+              >
+                <option value="">اختر التخصص</option>
+                <option value="علوم الحاسوب">علوم الحاسوب</option>
+                <option value="هندسة الحاسوب">هندسة الحاسوب</option>
+                <option value="تكنولوجيا المعلومات">تكنولوجيا المعلومات</option>
+                <option value="تطوير البرمجيات">تطوير البرمجيات</option>
+                <option value="تصميم الواجهات الرسومية">
+                  تصميم الواجهات الرسومية
+                </option>
+                <option value="أمن المعلومات">أمن المعلومات</option>
+                <option value="تحليل البيانات">تحليل البيانات</option>
+                <option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option>
+                <option value="تطبيقات الويب">تطبيقات الويب</option>
+                <option value="تطوير الألعاب">تطوير الألعاب</option>
+              </select>
+              <span dir="rtl" className="text-red-500">
+                {errors.major}
+              </span>
+
+              <Textarea
+                name="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="وصف لطلب المشروع"
+                dir="rtl"
+                className="mt-2 mb-2 p-4 border border-black flex items-center"
+              ></Textarea>
+              <span dir="rtl" className="text-red-500">
+                {errors.description}
+              </span>
+
+              {/* Date selection */}
+              <section dir="rtl" className="flex flex-col justify-end ">
+                <div className="mt-2 flex flex-col">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[240px] justify-start text-left font-normal",
+                          !startAtDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {startAtDate ? (
+                          format(startAtDate, "PPP")
+                        ) : (
+                          <span className="pr-2">تاريخ تسليم المشروع</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      align="start"
+                      className="flex w-auto flex-col space-y-2 p-2"
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formData.startAtDate ? (
-                        format(formData.startAtDate, "PPP")
-                      ) : (
-                        <span>تاريخ بداية المشروع </span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={formData.startAtDate}
-                      onSelect={(date) => handleDateSelect(date, "startAtDate")}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                      <Select
+                        onValueChange={(value) =>
+                          setStartAtDate(addDays(new Date(), parseInt(value)))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent position="popper">
+                          <SelectItem value="0">Today</SelectItem>
+                          <SelectItem value="1">Tomorrow</SelectItem>
+                          <SelectItem value="3">In 3 days</SelectItem>
+                          <SelectItem value="7">In a week</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <div className="rounded-md border">
+                        <Calendar
+                          mode="single"
+                          selected={startAtDate}
+                          onSelect={setStartAtDate}
+                        />
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
                 <span dir="rtl" className="text-red-500">
                   {errors.startAtDate}
                 </span>
-              </div>
-              <div className="mt-2 flex flex-col">
-                <Popover>
-                  <PopoverTrigger asChild dir="rtl">
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[280px] justify-start text-left font-normal",
-                        !formData.deadLineDate && "text-muted-foreground"
-                      )}
+
+                <div className="mt-2 flex flex-col">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[240px] justify-start text-left font-normal",
+                          !deadLineDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {deadLineDate ? (
+                          format(deadLineDate, "PPP")
+                        ) : (
+                          <span className="pr-2">تاريخ تسليم المشروع</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      align="start"
+                      className="flex w-auto flex-col space-y-2 p-2"
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formData.deadLineDate ? (
-                        format(formData.deadLineDate, "PPP")
-                      ) : (
-                        <span>تاريخ تسليم المشروع </span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={formData.deadLineDate}
-                      onSelect={(date) =>
-                        handleDateSelect(date, "deadLineDate")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <span dir="rtl" className="text-red-500">
-                  {errors.deadLineDate}
-                </span>
-              </div>
-            </section>
-            {/* Form actions */}
-            <DrawerFooter>
-              <Button onClick={handleSubmit}>قدم طلب</Button>
-              <DrawerClose asChild>
+                      <Select
+                        onValueChange={(value) =>
+                          setDeadLineDate(addDays(new Date(), parseInt(value)))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent position="popper">
+                          <SelectItem value="0">Today</SelectItem>
+                          <SelectItem value="1">Tomorrow</SelectItem>
+                          <SelectItem value="3">In 3 days</SelectItem>
+                          <SelectItem value="7">In a week</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <div className="rounded-md border">
+                        <Calendar
+                          mode="single"
+                          selected={deadLineDate}
+                          onSelect={setDeadLineDate}
+                        />
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                  <span dir="rtl" className="text-red-500">
+                    {errors.deadLineDate}
+                  </span>
+                </div>
+              </section>
+              <DialogFooter className="flex flex-row justify-between">
                 <Button
+                  className="bg-red-600 w-36"
                   onClick={() => setOpenBookNowModal(!openBookNowModal)}
-                  variant="outline"
                 >
                   إلغاء
                 </Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
+                <Button
+                  className="bg-white-600 w-36 text-black hover:border hover:border-2 hover:border-black hover:bg-white"
+                  onClick={handleSubmit}
+                >
+                  قدم طلب
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </div>
+        </Dialog>
       </div>
     </>
   );
