@@ -5,7 +5,7 @@ const localUrl = process.env.NEXT_PUBLIC_LOCALHOST_SITE_URL;
 
 export const fetchData = {
   addOrder: async (newOrder: CreateOrder) => {
-    const result = await axios.post(`https://codemastersapis.com:81/CreateOrder`, newOrder);
+    const result = await axios.post(`https://www.codemastersapis.com:81/CreateOrder`, newOrder);
     return result;
   },
 };
