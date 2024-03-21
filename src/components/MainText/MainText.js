@@ -13,8 +13,7 @@ function MainText() {
           className="flex flex-col text-black text-right"
         >
           <h3 className="font-mono text-3xl font-bold tracking-wide mb-5 flex flex-row justify-end items-center">
-            <Animations /> احنا موجودين عشان نساعدك تتعدى التحديات في عالم
-            البرمجة
+            احنا موجودين عشان نساعدك تتعدى التحديات في عالم البرمجة
           </h3>
           <h4 className="text-2xl leading-relaxed font-mono">
             عم تدرس منقدر انساعدك ونقدملك خدمات مواقع الويب أو تطبيقات الهاتف او
