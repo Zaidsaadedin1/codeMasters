@@ -66,30 +66,30 @@ function Homepage() {
         pauseOnHover
         theme="light"
       />
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col h-screen ">
         <header>
           <section className="bg-black">
             <MainMenu />
           </section>
         </header>
         <MainText />
-        <header className="border border-gray-400 mt-1">
+        <header className="">
           <ListOfCards />
         </header>
-        <footer className="flex flex-row justify-around items-center p-3 flex-wrap">
+        <footer className="flex flex-row justify-around bg-white items-center p-3 flex-wrap">
           <a
-            className="flex flex-row justify-center items-center font-mono m-2"
+            className="flex flex-row justify-center text-black items-center font-mono m-2"
             href="https://www.instagram.com/codemastersjo/"
           >
             <IoLogoInstagram />
             codemastersjo
           </a>
-          <h3 className="flex flex-row justify-around items-center font-mono m-2">
+          <h3 className="flex flex-row justify-around text-black items-center font-mono m-2">
             <CiPhone />
             0782739761
           </h3>
           <a
-            className="flex flex-row justify-center items-center font-mono m-2"
+            className="flex flex-row justify-center text-black items-center font-mono m-2"
             href="https://www.facebook.com/Codemastersjo/"
           >
             <FaFacebook />

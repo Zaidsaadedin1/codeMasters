@@ -7,14 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "../ui/input";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 import {
   Popover,
   PopoverContent,
@@ -163,20 +164,16 @@ function BookNowModal() {
 
   return (
     <>
-      <div className="w-max-500 h-screen">
-        <Dialog open={openBookNowModal}>
-          <DialogTrigger asChild>
+      <div className=" min-h-[300px]">
+        <Drawer open={openBookNowModal}>
+          <DrawerTrigger asChild>
             <Button variant="outline">احجز الآن</Button>
-          </DialogTrigger>
-          <div>
-            <DialogContent
-              style={{
-                padding: "0.75rem",
-                maxWidth: "100vh",
-                maxHeight: "100vh",
-                overflowY: "auto",
-              }}
-            >
+          </DrawerTrigger>
+          <DrawerContent
+
+          >
+            <div className="mx-auto w-full max-w-sm flex flex-col">
+
               {/* Form inputs */}
               <input
                 name="firstName"
@@ -186,7 +183,7 @@ function BookNowModal() {
                 dir="rtl"
                 className="mt-2 p-2"
               />
-              <span dir="rtl" className="text-red-500">
+              <span dir="rtl" className="text-red-500 text-xs">
                 {errors.firstName}
               </span>
 
@@ -198,7 +195,7 @@ function BookNowModal() {
                 dir="rtl"
                 className="mt-2 p-2"
               />
-              <span dir="rtl" className="text-red-500">
+              <span dir="rtl" className="text-red-500 text-xs">
                 {errors.lastName}
               </span>
 
@@ -210,7 +207,7 @@ function BookNowModal() {
                 dir="rtl"
                 className="mt-2 p-2"
               />
-              <span dir="rtl" className="text-red-500">
+              <span dir="rtl" className="text-red-500 text-xs">
                 {errors.university}
               </span>
 
@@ -222,7 +219,7 @@ function BookNowModal() {
                 dir="rtl"
                 className="mt-2 p-2"
               />
-              <span dir="rtl" className="text-red-500">
+              <span dir="rtl" className="text-red-500 text-xs">
                 {errors.phoneNumber}
               </span>
 
@@ -247,7 +244,7 @@ function BookNowModal() {
                 <option value="تطبيقات الويب">تطبيقات الويب</option>
                 <option value="تطوير الألعاب">تطوير الألعاب</option>
               </select>
-              <span dir="rtl" className="text-red-500">
+              <span dir="rtl" className="text-red-500 text-xs">
                 {errors.major}
               </span>
 
@@ -257,13 +254,12 @@ function BookNowModal() {
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="وصف لطلب المشروع"
                 dir="rtl"
-                className="mt-2 mb-2 p-4 border border-black flex items-center"
+                className="mt-2  p-4 border border-black flex items-center"
               ></Textarea>
-              <span dir="rtl" className="text-red-500">
+              <span dir="rtl" className="text-red-500 text-xs">
                 {errors.description}
               </span>
 
-              {/* Date selection */}
               <section dir="rtl" className="flex flex-col justify-end ">
                 <div className="mt-2 flex flex-col">
                   <Popover>
@@ -312,7 +308,7 @@ function BookNowModal() {
                     </PopoverContent>
                   </Popover>
                 </div>
-                <span dir="rtl" className="text-red-500">
+                <span dir="rtl" className="text-red-500 text-xs">
                   {errors.startAtDate}
                 </span>
 
@@ -362,12 +358,12 @@ function BookNowModal() {
                       </div>
                     </PopoverContent>
                   </Popover>
-                  <span dir="rtl" className="text-red-500">
+                  <span dir="rtl" className="text-red-500 text-xs">
                     {errors.deadLineDate}
                   </span>
                 </div>
               </section>
-              <DialogFooter className="flex flex-row justify-between">
+              <DrawerFooter className="flex flex-row justify-end">
                 <Button
                   className="bg-red-600 w-36"
                   onClick={() => setOpenBookNowModal(!openBookNowModal)}
@@ -380,11 +376,12 @@ function BookNowModal() {
                 >
                   قدم طلب
                 </Button>
-              </DialogFooter>
-            </DialogContent>
-          </div>
-        </Dialog>
+              </DrawerFooter>
+            </div>
+          </DrawerContent>
+        </Drawer >
       </div>
+
     </>
   );
 }

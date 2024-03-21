@@ -29,7 +29,7 @@ function Card({ src, text }: CardProps) {
     >
       {isHovered ? (
         <div className="card-front">
-          <Image width={250} height={200} src={src} alt={text} />
+          <Image width={250} height={250} src={src} alt={text} />
           <h1 className="text-xl font-mono  ">{text}</h1>
         </div>
       ) : (
