@@ -1,5 +1,5 @@
 import React from 'react'
-import "/AdminPannel.css"
+import "./AdminPannel.css"
 function AdminPannel() {
     return (
         <div>
