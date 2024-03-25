@@ -10,13 +10,18 @@ export const fetchData = {
   //   return result;
   // },
   addOrder: async (newOrder: CreateOrder) => {
-    const result = await axios.post(`https://codemastersapi-production.up.railway.app/CreateOrder`, newOrder);
+    const result = await axios.post(`https://codemastersapi-production.up.railway.app/CreateOrder`, newOrder, {
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
     return result;
   },
   getAllOrders: async (token: string | null) => {
     const result = await axios.get(`https://codemastersapi-production.up.railway.app/GetAllOrders`, {
 
       headers: {
+        "Access-Control-Allow-Origin": "*",
         Authorization: `Bearer ${token}`
       }
 
@@ -24,7 +29,11 @@ export const fetchData = {
     return result;
   },
   login: async (userLogins: UserLoginDto) => {
-    const result = await axios.post(`https://codemastersapi-production.up.railway.app/Login`, userLogins);
+    const result = await axios.post(`https://codemastersapi-production.up.railway.app/Login`, userLogins, {
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
     return result;
   }
 };
