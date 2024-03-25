@@ -1,8 +1,10 @@
+"use client"
 import React, { createContext, useContext, useState } from "react";
 
 interface AlertData {
   alertDescription: string;
   alertTitle: string;
+  status: number
 }
 
 interface AlertContextType {
@@ -26,6 +28,7 @@ export const AlertDataProvider: React.FC<{ children: React.ReactNode }> = ({
   const [alertData, setAlertData] = useState<AlertData>({
     alertDescription: "",
     alertTitle: "",
+    status: 200,
   });
 
   return (

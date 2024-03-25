@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { BookNowModalProvider } from "@/Contexts/BookNowModal";
+import { AlertDataProvider } from "@/Contexts/AlertData";
+import { AlertProvider } from "@/Contexts/AlertContext";
+import { AuthProvider } from "@/Contexts/AuthProvider";
+import Head from 'next/head';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,9 +20,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  <Head >
+    <link rel="icon" href="./tabIcon.png" />
+  </Head>
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <AuthProvider>
+        <BookNowModalProvider>
+          <AlertDataProvider>
+            <AlertProvider>
+              <body className={inter.className}>{children}</body>
+            </AlertProvider>
+          </AlertDataProvider>
+        </BookNowModalProvider>
+      </AuthProvider>
     </html>
   );
 }

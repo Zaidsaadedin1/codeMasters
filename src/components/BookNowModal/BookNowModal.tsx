@@ -5,7 +5,6 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Input } from "../ui/input";
 import {
   Drawer,
   DrawerClose,
@@ -36,10 +35,7 @@ import { useAlertData } from "@/Contexts/AlertData";
 import { useAlertModal } from "@/Contexts/AlertContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-interface AlertData {
-  alertDescription: string;
-  alertTitle: string;
-}
+
 function BookNowModal() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -93,6 +89,8 @@ function BookNowModal() {
 
     if (!phoneNumber) {
       newErrors.phoneNumber = "يرجى ادخال رقم الهاتف";
+    } else if (phoneNumber.length < 3) {
+      newErrors.phoneNumber = "يرجى ادخال رقم الهاتف";
     } else if (isNaN(parseInt(phoneNumber)) || phoneNumber.length > 10) {
       newErrors.phoneNumber = "يرجى ادخال رقم الهاتف  وان يكون من 10 خانات";
     }
@@ -128,6 +126,7 @@ function BookNowModal() {
           setAlertData({
             alertDescription: " تم تقديم الطلب بنجاح",
             alertTitle: "تم ",
+            status: 200,
           });
           setAlertModal(true);
         } else {
@@ -135,6 +134,7 @@ function BookNowModal() {
           setAlertData({
             alertDescription: "حدث خطأ غير متوقع: " + res.status,
             alertTitle: "خطأ",
+            status: 400,
           });
           setAlertModal(true);
         }
@@ -142,8 +142,9 @@ function BookNowModal() {
         setOpenBookNowModal(false);
         console.error("حدث خطأ أثناء إضافة الطلب:", error);
         setAlertData({
-          alertDescription: "حدث خطأ أثناء إضافة الطلب: ",
+          alertDescription: " حدث خطأ أثناء إضافة الطلب ",
           alertTitle: "خطأ",
+          status: 400,
         });
         setAlertModal(true);
       }
@@ -174,7 +175,6 @@ function BookNowModal() {
           >
             <div className="mx-auto w-full max-w-sm flex flex-col">
 
-              {/* Form inputs */}
               <input
                 name="firstName"
                 value={firstName}
@@ -275,7 +275,7 @@ function BookNowModal() {
                         {startAtDate ? (
                           format(startAtDate, "PPP")
                         ) : (
-                          <span className="pr-2">تاريخ تسليم المشروع</span>
+                          <span className="pr-2">تاريخ بداية المشروع</span>
                         )}
                       </Button>
                     </PopoverTrigger>
