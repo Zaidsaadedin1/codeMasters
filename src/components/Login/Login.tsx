@@ -15,16 +15,14 @@ function Login() {
 
     const submitLogins = async () => {
         const response = await fetchData.login(userLogins);
-
-        if (response.status === 200) {
-            console.log('Login successful');
+        const token = response.data.token;
+        localStorage.setItem('token', token);
+        if (response.status === 200 && token) {
             console.log(response);
-            // Use router.push for server-side or client-side redirection
-            router.push("/AdminPannel"); // Assuming "/AdminPannel" is a valid page
+            console.log(token);
+            router.push("/AdminPanel");
         } else {
-            console.error('Login failed');
-            // Optionally redirect to a login error page:
-            // router.push("/login-error");
+            router.push("/login");
         }
     };
 

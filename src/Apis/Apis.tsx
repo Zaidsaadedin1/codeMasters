@@ -13,6 +13,16 @@ export const fetchData = {
     const result = await axios.post(`https://localhost:44330/CreateOrder`, newOrder);
     return result;
   },
+  getAllOrders: async (token: string | null) => {
+    const result = await axios.get(`https://localhost:44330/GetAllOrders`, {
+
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+
+    });
+    return result;
+  },
   login: async (userLogins: UserLoginDto) => {
     const result = await axios.post(`https://localhost:44330/Login`, userLogins);
     return result;
