@@ -10,11 +10,11 @@ export const fetchData = {
   //   return result;
   // },
   addOrder: async (newOrder: CreateOrder) => {
-    const result = await axios.post(`https://localhost:44330/CreateOrder`, newOrder);
+    const result = await axios.post(`https://codemastersapi-production.up.railway.app/CreateOrder`, newOrder);
     return result;
   },
   getAllOrders: async (token: string | null) => {
-    const result = await axios.get(`https://localhost:44330/GetAllOrders`, {
+    const result = await axios.get(`https://codemastersapi-production.up.railway.app/GetAllOrders`, {
 
       headers: {
         Authorization: `Bearer ${token}`
@@ -24,7 +24,7 @@ export const fetchData = {
     return result;
   },
   login: async (userLogins: UserLoginDto) => {
-    const result = await axios.post(`https://localhost:44330/Login`, userLogins);
+    const result = await axios.post(`https://codemastersapi-production.up.railway.app/Login`, userLogins);
     return result;
   }
 };
