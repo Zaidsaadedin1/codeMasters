@@ -10,18 +10,14 @@ export const fetchData = {
   //   return result;
   // },
   addOrder: async (newOrder: CreateOrder) => {
-    fetch("https://codemastersapi-production.up.railway.app/CreateOrder", {
+    const result = await fetch("https://codemastersapi-production.up.railway.app/CreateOrder", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newOrder)
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
+    return result.json();
   },
   getAllOrders: async (token: string | null) => {
     const result = await axios.get(`https://codemastersapi-production.up.railway.app/GetAllOrders`, {
