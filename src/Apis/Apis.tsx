@@ -13,7 +13,6 @@ export const fetchData = {
     const result = await axios.post(`https://codemastersapi-production.up.railway.app/CreateOrder`, newOrder, {
       withCredentials: true,
       headers: {
-        "Access-Control-Allow-Origin": true
       }
     });
     return result;
@@ -22,7 +21,6 @@ export const fetchData = {
     const result = await axios.get(`https://codemastersapi-production.up.railway.app/GetAllOrders`, {
       withCredentials: true,
       headers: {
-        "Access-Control-Allow-Origin": true,
         Authorization: `Bearer ${token}`
       }
 
@@ -33,7 +31,6 @@ export const fetchData = {
     const result = await axios.post(`https://codemastersapi-production.up.railway.app/Login`, userLogins, {
       withCredentials: true,
       headers: {
-        "Access-Control-Allow-Origin": true
       }
     });
     return result;
