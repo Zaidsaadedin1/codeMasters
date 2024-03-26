@@ -119,11 +119,7 @@ function Homepage() {
             codemastersjo
           </a>
         </footer>
-        {openBookNowModal && (
-          <div className="flex justify-center">
-            <BookNowModal />
-          </div>
-        )}
+        <BookNowModal />
       </div>
     </>
   );

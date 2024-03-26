@@ -164,225 +164,215 @@ function BookNowModal() {
   };
 
   return (
-    <>
-      <div className=" min-h-[300px]">
-        <Drawer open={openBookNowModal}>
-          <DrawerTrigger asChild>
-            <Button variant="outline">احجز الآن</Button>
-          </DrawerTrigger>
-          <DrawerContent
+    <Drawer open={openBookNowModal}>
+      <DrawerContent>
+        <div className="mx-auto w-full max-w-sm flex flex-col">
+          <input
+            name="firstName"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="الاسم الأول"
+            dir="rtl"
+            className="mt-2 p-2"
+          />
+          <span dir="rtl" className="text-red-500 text-xs">
+            {errors.firstName}
+          </span>
 
+          <input
+
+            name="lastName"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="اسم العائلة"
+            dir="rtl"
+            className="mt-2 p-2"
+          />
+          <span dir="rtl" className="text-red-500 text-xs">
+            {errors.lastName}
+          </span>
+
+          <input
+            name="university"
+            value={university}
+            onChange={(e) => setUniversity(e.target.value)}
+            placeholder="اسم الجامعة"
+            dir="rtl"
+            className="mt-2 p-2"
+          />
+          <span dir="rtl" className="text-red-500 text-xs">
+            {errors.university}
+          </span>
+
+          <input
+            name="phoneNumber"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="رقم الهاتف"
+            dir="rtl"
+            className="mt-2 p-2"
+          />
+          <span dir="rtl" className="text-red-500 text-xs">
+            {errors.phoneNumber}
+          </span>
+
+          <select
+            className="flex justify-end border border-1 mt-2 p-2"
+            name="major"
+            value={major}
+            onChange={(e) => setMajor(e.target.value)}
+            dir="rtl"
           >
-            <div className="mx-auto w-full max-w-sm flex flex-col">
+            <option value="">اختر التخصص</option>
+            <option value="علوم الحاسوب">علوم الحاسوب</option>
+            <option value="هندسة الحاسوب">هندسة الحاسوب</option>
+            <option value="تكنولوجيا المعلومات">تكنولوجيا المعلومات</option>
+            <option value="تطوير البرمجيات">تطوير البرمجيات</option>
+            <option value="تصميم الواجهات الرسومية">
+              تصميم الواجهات الرسومية
+            </option>
+            <option value="أمن المعلومات">أمن المعلومات</option>
+            <option value="تحليل البيانات">تحليل البيانات</option>
+            <option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option>
+            <option value="تطبيقات الويب">تطبيقات الويب</option>
+            <option value="تطوير الألعاب">تطوير الألعاب</option>
+          </select>
+          <span dir="rtl" className="text-red-500 text-xs">
+            {errors.major}
+          </span>
 
-              <input
-                name="firstName"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="الاسم الأول"
-                dir="rtl"
-                className="mt-2 p-2"
-              />
-              <span dir="rtl" className="text-red-500 text-xs">
-                {errors.firstName}
-              </span>
+          <Textarea
+            name="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="وصف لطلب المشروع"
+            dir="rtl"
+            className="mt-2  p-4 border border-black flex items-center"
+          ></Textarea>
+          <span dir="rtl" className="text-red-500 text-xs">
+            {errors.description}
+          </span>
 
-              <input
-                name="lastName"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="اسم العائلة"
-                dir="rtl"
-                className="mt-2 p-2"
-              />
-              <span dir="rtl" className="text-red-500 text-xs">
-                {errors.lastName}
-              </span>
-
-              <input
-                name="university"
-                value={university}
-                onChange={(e) => setUniversity(e.target.value)}
-                placeholder="اسم الجامعة"
-                dir="rtl"
-                className="mt-2 p-2"
-              />
-              <span dir="rtl" className="text-red-500 text-xs">
-                {errors.university}
-              </span>
-
-              <input
-                name="phoneNumber"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder="رقم الهاتف"
-                dir="rtl"
-                className="mt-2 p-2"
-              />
-              <span dir="rtl" className="text-red-500 text-xs">
-                {errors.phoneNumber}
-              </span>
-
-              <select
-                className="flex justify-end border border-1 mt-2 p-2"
-                name="major"
-                value={major}
-                onChange={(e) => setMajor(e.target.value)}
-                dir="rtl"
-              >
-                <option value="">اختر التخصص</option>
-                <option value="علوم الحاسوب">علوم الحاسوب</option>
-                <option value="هندسة الحاسوب">هندسة الحاسوب</option>
-                <option value="تكنولوجيا المعلومات">تكنولوجيا المعلومات</option>
-                <option value="تطوير البرمجيات">تطوير البرمجيات</option>
-                <option value="تصميم الواجهات الرسومية">
-                  تصميم الواجهات الرسومية
-                </option>
-                <option value="أمن المعلومات">أمن المعلومات</option>
-                <option value="تحليل البيانات">تحليل البيانات</option>
-                <option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option>
-                <option value="تطبيقات الويب">تطبيقات الويب</option>
-                <option value="تطوير الألعاب">تطوير الألعاب</option>
-              </select>
-              <span dir="rtl" className="text-red-500 text-xs">
-                {errors.major}
-              </span>
-
-              <Textarea
-                name="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="وصف لطلب المشروع"
-                dir="rtl"
-                className="mt-2  p-4 border border-black flex items-center"
-              ></Textarea>
-              <span dir="rtl" className="text-red-500 text-xs">
-                {errors.description}
-              </span>
-
-              <section dir="rtl" className="flex flex-col justify-end ">
-                <div className="mt-2 flex flex-col">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] justify-start text-left font-normal",
-                          !startAtDate && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {startAtDate ? (
-                          format(startAtDate, "PPP")
-                        ) : (
-                          <span className="pr-2">تاريخ بداية المشروع</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      align="start"
-                      className="flex w-auto flex-col space-y-2 p-2"
-                    >
-                      <Select
-                        onValueChange={(value) =>
-                          setStartAtDate(addDays(new Date(), parseInt(value)))
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent position="popper">
-                          <SelectItem value="0">Today</SelectItem>
-                          <SelectItem value="1">Tomorrow</SelectItem>
-                          <SelectItem value="3">In 3 days</SelectItem>
-                          <SelectItem value="7">In a week</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <div className="rounded-md border">
-                        <Calendar
-                          mode="single"
-                          selected={startAtDate}
-                          onSelect={setStartAtDate}
-                        />
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                <span dir="rtl" className="text-red-500 text-xs">
-                  {errors.startAtDate}
-                </span>
-
-                <div className="mt-2 flex flex-col">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] justify-start text-left font-normal",
-                          !deadLineDate && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {deadLineDate ? (
-                          format(deadLineDate, "PPP")
-                        ) : (
-                          <span className="pr-2">تاريخ تسليم المشروع</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      align="start"
-                      className="flex w-auto flex-col space-y-2 p-2"
-                    >
-                      <Select
-                        onValueChange={(value) =>
-                          setDeadLineDate(addDays(new Date(), parseInt(value)))
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent position="popper">
-                          <SelectItem value="0">Today</SelectItem>
-                          <SelectItem value="1">Tomorrow</SelectItem>
-                          <SelectItem value="3">In 3 days</SelectItem>
-                          <SelectItem value="7">In a week</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <div className="rounded-md border">
-                        <Calendar
-                          mode="single"
-                          selected={deadLineDate}
-                          onSelect={setDeadLineDate}
-                        />
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                  <span dir="rtl" className="text-red-500 text-xs">
-                    {errors.deadLineDate}
-                  </span>
-                </div>
-              </section>
-              <DrawerFooter className="flex flex-row justify-end">
-                <Button
-                  className="bg-red-600 w-36"
-                  onClick={() => setOpenBookNowModal(!openBookNowModal)}
+          <section dir="rtl" className="flex flex-col justify-end ">
+            <div className="mt-2 flex flex-col">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[240px] justify-start text-left font-normal",
+                      !startAtDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {startAtDate ? (
+                      format(startAtDate, "PPP")
+                    ) : (
+                      <span className="pr-2">تاريخ بداية المشروع</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  align="start"
+                  className="flex w-auto flex-col space-y-2 p-2"
                 >
-                  إلغاء
-                </Button>
-                <Button
-                  className="bg-white-600 w-36 text-black hover:border hover:border-2 hover:border-black hover:bg-white"
-                  onClick={handleSubmit}
-                >
-                  قدم طلب
-                </Button>
-              </DrawerFooter>
+                  <Select
+                    onValueChange={(value) =>
+                      setStartAtDate(addDays(new Date(), parseInt(value)))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      <SelectItem value="0">Today</SelectItem>
+                      <SelectItem value="1">Tomorrow</SelectItem>
+                      <SelectItem value="3">In 3 days</SelectItem>
+                      <SelectItem value="7">In a week</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <div className="rounded-md border">
+                    <Calendar
+                      mode="single"
+                      selected={startAtDate}
+                      onSelect={setStartAtDate}
+                    />
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
-          </DrawerContent>
-        </Drawer >
-      </div>
+            <span dir="rtl" className="text-red-500 text-xs">
+              {errors.startAtDate}
+            </span>
 
-    </>
+            <div className="mt-2 flex flex-col">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[240px] justify-start text-left font-normal",
+                      !deadLineDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {deadLineDate ? (
+                      format(deadLineDate, "PPP")
+                    ) : (
+                      <span className="pr-2">تاريخ تسليم المشروع</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  align="start"
+                  className="flex w-auto flex-col space-y-2 p-2"
+                >
+                  <Select
+                    onValueChange={(value) =>
+                      setDeadLineDate(addDays(new Date(), parseInt(value)))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      <SelectItem value="0">Today</SelectItem>
+                      <SelectItem value="1">Tomorrow</SelectItem>
+                      <SelectItem value="3">In 3 days</SelectItem>
+                      <SelectItem value="7">In a week</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <div className="rounded-md border">
+                    <Calendar
+                      mode="single"
+                      selected={deadLineDate}
+                      onSelect={setDeadLineDate}
+                    />
+                  </div>
+                </PopoverContent>
+              </Popover>
+              <span dir="rtl" className="text-red-500 text-xs">
+                {errors.deadLineDate}
+              </span>
+            </div>
+          </section>
+          <DrawerFooter className="flex flex-row justify-end">
+            <Button
+              className="bg-red-600 w-36"
+              onClick={() => setOpenBookNowModal(!openBookNowModal)}
+            >
+              إلغاء
+            </Button>
+            <Button
+              className="bg-white-600 w-36 text-black hover:border hover:border-2 hover:border-black hover:bg-white"
+              onClick={handleSubmit}
+            >
+              قدم طلب
+            </Button>
+          </DrawerFooter>
+        </div>
+      </DrawerContent>
+    </Drawer >
   );
 }
 
