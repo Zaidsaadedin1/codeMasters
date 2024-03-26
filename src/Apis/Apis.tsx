@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const fetchData = {
   addOrder: async (newOrder: CreateOrder) => {
-    const result = await axios.post(`https://www.codemastersapis.com:81/CreateOrder`, newOrder);
+    const result = await axios.post(`https://codemastersapi-production.up.railway.app/CreateOrder`, newOrder);
     return result;
   },
   getAllOrders: async (token: string | null) => {
