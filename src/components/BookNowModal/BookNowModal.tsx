@@ -164,25 +164,6 @@ function BookNowModal() {
   };
 
   return (
-<<<<<<< HEAD
-    <>
-      <div className=" min-h-[300px]">
-        <Drawer open={openBookNowModal}>
-          <DrawerContent>
-            <div className="mx-auto w-full max-w-sm flex flex-col">
-              {/* Form inputs */}
-              <input
-                name="firstName"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="الاسم الأول"
-                dir="rtl"
-                className="mt-2 p-2"
-              />
-              <span dir="rtl" className="text-red-500 text-xs">
-                {errors.firstName}
-              </span>
-=======
     <Drawer open={openBookNowModal}>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm flex flex-col">
@@ -271,7 +252,6 @@ function BookNowModal() {
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.description}
           </span>
->>>>>>> 76b20dc00f39b12bc8940e614cefa3be4bd73d1e
 
           <section dir="rtl" className="flex flex-col justify-end ">
             <div className="mt-2 flex flex-col">
@@ -321,12 +301,6 @@ function BookNowModal() {
                 </PopoverContent>
               </Popover>
             </div>
-<<<<<<< HEAD
-          </DrawerContent>
-        </Drawer>
-      </div>
-    </>
-=======
             <span dir="rtl" className="text-red-500 text-xs">
               {errors.startAtDate}
             </span>
@@ -399,7 +373,6 @@ function BookNowModal() {
         </div>
       </DrawerContent>
     </Drawer >
->>>>>>> 76b20dc00f39b12bc8940e614cefa3be4bd73d1e
   );
 }
 
