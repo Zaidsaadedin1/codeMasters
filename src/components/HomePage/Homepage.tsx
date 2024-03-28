@@ -18,26 +18,49 @@ function Homepage() {
   const { alertData } = useAlertData();
 
   const handleToast = () => {
-    toast.success(
-      <>
-        <h1 className="font-black" dir="rtl">
-          {alertData.alertTitle}
-        </h1>
-        <br />
-        <h4 className="font-black" dir="rtl">
-          {alertData.alertDescription}
-        </h4>
-      </>,
-      {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      }
-    );
+    if (alertData.status === 200) {
+      toast.success(
+        <>
+          <h1 className="font-black" dir="rtl">
+            {alertData.alertTitle}
+          </h1>
+          <br />
+          <h4 className="font-black" dir="rtl">
+            {alertData.alertDescription}
+          </h4>
+        </>,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+    } else {
+      toast.error(
+        <>
+          <h1 className="font-black" dir="rtl">
+            {alertData.alertTitle}
+          </h1>
+          <br />
+          <h4 className="font-black" dir="rtl">
+            {alertData.alertDescription}
+          </h4>
+        </>,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+    }
     setAlertModal(false);
   };
 
@@ -96,11 +119,7 @@ function Homepage() {
             codemastersjo
           </a>
         </footer>
-        {openBookNowModal && (
-          <div className="flex justify-center">
-            <BookNowModal />
-          </div>
-        )}
+        <BookNowModal />
       </div>
     </>
   );
