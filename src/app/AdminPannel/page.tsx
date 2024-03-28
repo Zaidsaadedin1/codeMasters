@@ -1,4 +1,4 @@
-import AdminPannel from '@/components/AdminPannel/AdminPannel'
+import AdminPannel from '@/components/AdminPanel/AdminPanel'
 import React from 'react'
 
 function AdminPannelPage() {

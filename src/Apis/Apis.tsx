@@ -10,11 +10,17 @@ export const fetchData = {
   //   return result;
   // },
   addOrder: async (newOrder: CreateOrder) => {
-    const result = await axios.post(`https://localhost:44330/CreateOrder`, newOrder);
+    const result = await axios.post(
+      `https://localhost:44330/CreateOrder`,
+      newOrder
+    );
     return result;
   },
   login: async (userLogins: UserLoginDto) => {
-    const result = await axios.post(`https://localhost:44330/Login`, userLogins);
+    const result = await axios.post(
+      `https://localhost:44330/Login`,
+      userLogins
+    );
     return result;
-  }
+  },
 };

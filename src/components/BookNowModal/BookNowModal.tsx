@@ -15,7 +15,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer"
+} from "@/components/ui/drawer";
 import {
   Popover,
   PopoverContent,
@@ -166,14 +166,8 @@ function BookNowModal() {
     <>
       <div className=" min-h-[300px]">
         <Drawer open={openBookNowModal}>
-          <DrawerTrigger asChild>
-            <Button variant="outline">احجز الآن</Button>
-          </DrawerTrigger>
-          <DrawerContent
-
-          >
+          <DrawerContent>
             <div className="mx-auto w-full max-w-sm flex flex-col">
-
               {/* Form inputs */}
               <input
                 name="firstName"
@@ -379,9 +373,8 @@ function BookNowModal() {
               </DrawerFooter>
             </div>
           </DrawerContent>
-        </Drawer >
+        </Drawer>
       </div>
-
     </>
   );
 }
