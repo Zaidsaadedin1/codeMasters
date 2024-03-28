@@ -1,7 +1,9 @@
 .card-front {
   box-sizing: border-box;
-  min-width: 350px;
-  min-height: 350PX;
+  min-width: 300px;
+  min-height: 300px;
+  max-width: 350px;
+  max-height: 350px;
   background: rgb(255, 255, 255);
   border: 1px solid black;
   box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
@@ -18,7 +20,17 @@
   color: black;
   flex-direction: column;
 }
-
+.text-area {
+  min-width: 50px;
+  min-height: 50px;
+  max-width: 300px;
+  max-height: 300px;
+}
+.card-text {
+  word-wrap: break-word;
+  font-family: monospace;
+  font-size: larger;
+}
 .card-front:hover {
   border: 1px solid black;
   transform: scale(1.05);
@@ -29,11 +41,20 @@
 .card-front:active {
   transform: scale(0.95) rotateZ(1.7deg);
 }
-
+.imageIcon {
+  width: 200px;
+  height: 200px;
+  max-width: 300px;
+  min-width: 50px;
+  max-height: 350px;
+  min-height: 50px;
+}
 .card-back {
   box-sizing: border-box;
-  min-width: 300px;
-  min-height: 350px;
+  min-width: 339px;
+  min-height: 339px;
+  max-width: 339px;
+  max-height: 339px;
   background: rgba(217, 217, 217, 0.58);
   border: 1px solid white;
   box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);

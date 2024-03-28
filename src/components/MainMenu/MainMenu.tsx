@@ -8,7 +8,7 @@ function MainMenu() {
   const { openBookNowModal, setOpenBookNowModal } = useBookNowModal();
 
   return (
-    <div className="p-2 bg-white">
+    <div className="p-2 bg-white p-3">
       <menu className="font-mono w-max-[100%] flex flex-row justify-between items-center">
         <div className="flex items-center">
           <Image

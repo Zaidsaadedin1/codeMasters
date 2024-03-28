@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Button } from "../../ui/button";
 import { useBookNowModal } from "@/Contexts/BookNowModal";
 import Image from "next/image";
-import "./Card.css";
+import "../Card.css";
 
 interface CardProps {
-  src: string;
+  image: JSX.Element;
   text: string;
 }
 
-function Card({ src, text }: CardProps) {
+function Card({ image, text }: CardProps) {
   const { openBookNowModal, setOpenBookNowModal } = useBookNowModal();
   const [isHovered, setIsHovered] = useState(true);
 
@@ -29,8 +29,8 @@ function Card({ src, text }: CardProps) {
     >
       {isHovered ? (
         <div className="card-front">
-          <Image width={250} height={250} src={src} alt={text} />
-          <h1 className="text-xl font-mono  ">{text}</h1>
+          <div className="">{image}</div>
+          <h1 className="card-text text-area ">{text}</h1>
         </div>
       ) : (
         <div className="card-back font-mono">
