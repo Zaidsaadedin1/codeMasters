@@ -5,10 +5,10 @@ import { BookNowModalProvider } from "@/Contexts/BookNowModal";
 import { AlertDataProvider } from "@/Contexts/AlertData";
 import { AlertProvider } from "@/Contexts/AlertContext";
 import { AuthProvider } from "@/Contexts/AuthProvider";
-import Head from 'next/head';
+import Head from "next/head";
+import { CardsProvider } from "@/Contexts/CardsContext ";
 
 const inter = Inter({ subsets: ["latin"] });
-
 
 export const metadata: Metadata = {
   title: "Code Masters",
@@ -20,19 +20,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  <Head >
+  <Head>
     <link rel="icon" href="./tabIcon.png" />
-  </Head>
+  </Head>;
   return (
     <html lang="en">
       <AuthProvider>
-        <BookNowModalProvider>
-          <AlertDataProvider>
-            <AlertProvider>
-              <body className={inter.className}>{children}</body>
-            </AlertProvider>
-          </AlertDataProvider>
-        </BookNowModalProvider>
+        <CardsProvider>
+          <BookNowModalProvider>
+            <AlertDataProvider>
+              <AlertProvider>
+                <body className={inter.className}>{children}</body>
+              </AlertProvider>
+            </AlertDataProvider>
+          </BookNowModalProvider>
+        </CardsProvider>
       </AuthProvider>
     </html>
   );

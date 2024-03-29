@@ -35,6 +35,7 @@ import { useAlertData } from "@/Contexts/AlertData";
 import { useAlertModal } from "@/Contexts/AlertContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { CardData, useCardsContext } from "@/Contexts/CardsContext ";
 
 function BookNowModal() {
   const [firstName, setFirstName] = useState("");
@@ -58,6 +59,7 @@ function BookNowModal() {
   const { openBookNowModal, setOpenBookNowModal } = useBookNowModal();
   const { alertData, setAlertData } = useAlertData();
   const { setAlertModal } = useAlertModal();
+  const { cards } = useCardsContext();
 
   const handleSubmit = async () => {
     const newErrors = {
@@ -180,7 +182,6 @@ function BookNowModal() {
           </span>
 
           <input
-
             name="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -223,19 +224,14 @@ function BookNowModal() {
             onChange={(e) => setMajor(e.target.value)}
             dir="rtl"
           >
-            <option value="">اختر التخصص</option>
-            <option value="علوم الحاسوب">علوم الحاسوب</option>
-            <option value="هندسة الحاسوب">هندسة الحاسوب</option>
-            <option value="تكنولوجيا المعلومات">تكنولوجيا المعلومات</option>
-            <option value="تطوير البرمجيات">تطوير البرمجيات</option>
-            <option value="تصميم الواجهات الرسومية">
-              تصميم الواجهات الرسومية
-            </option>
-            <option value="أمن المعلومات">أمن المعلومات</option>
-            <option value="تحليل البيانات">تحليل البيانات</option>
-            <option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option>
-            <option value="تطبيقات الويب">تطبيقات الويب</option>
-            <option value="تطوير الألعاب">تطوير الألعاب</option>
+            {" "}
+            <option value="">اختر المشروع</option>
+            {cards.map((card: CardData, index: number) => (
+              <option key={index} value={card.text}>
+                {card.text}
+              </option> 
+            ))}
+            <option value={"آخر"}>آخر</option>
           </select>
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.major}
@@ -372,7 +368,7 @@ function BookNowModal() {
           </DrawerFooter>
         </div>
       </DrawerContent>
-    </Drawer >
+    </Drawer>
   );
 }
 
