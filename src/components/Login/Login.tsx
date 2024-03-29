@@ -15,14 +15,18 @@ function Login() {
     password: "",
   });
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submitLogins = async () => {
+    setIsSubmitting(true);
     const response = await fetchData.login(userLogins);
     if (response.status === 200 && response.data.token) {
       setToken(response.data.token);
       router.push("/admin-panel");
+      setIsSubmitting(false);
     } else {
       router.push("/login");
+      setIsSubmitting(false);
     }
   };
 
@@ -109,7 +113,12 @@ function Login() {
                   <i>Password</i>
                 </div>
                 <div className="inputBox">
-                  <Button onClick={submitLogins} type="submit" value="Login">
+                  <Button
+                    onClick={submitLogins}
+                    disabled={isSubmitting}
+                    type="submit"
+                    value="Login"
+                  >
                     Login
                   </Button>
                 </div>

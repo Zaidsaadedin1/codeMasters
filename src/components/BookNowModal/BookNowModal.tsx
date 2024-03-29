@@ -58,6 +58,7 @@ function BookNowModal() {
   const { setAlertData } = useAlertData();
   const { setAlertModal } = useAlertModal();
   const { cards } = useCardsContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const resetForm = () => {
     setFirstName("");
@@ -156,6 +157,7 @@ function BookNowModal() {
   const handleSubmit = async () => {
     const checkInputs = setError();
     if (checkInputs) {
+      setIsSubmitting(true);
       const newOrder: CreateOrder = {
         firstName,
         lastName,
@@ -178,6 +180,7 @@ function BookNowModal() {
           });
           setAlertModal(true);
           resetForm();
+          setIsSubmitting(false);
         } else {
           setOpenBookNowModal(false);
           setAlertData({
@@ -186,6 +189,7 @@ function BookNowModal() {
             status: 400,
           });
           setAlertModal(true);
+          setIsSubmitting(false);
         }
       } catch (error) {
         setOpenBookNowModal(false);
@@ -196,6 +200,7 @@ function BookNowModal() {
           status: 400,
         });
         setAlertModal(true);
+        setIsSubmitting(false);
       }
     } else {
       setErrors(Errors);
@@ -430,6 +435,7 @@ function BookNowModal() {
             <Button
               className="bg-white-600 w-36 text-black hover:border hover:border-2 hover:border-black hover:bg-white"
               onClick={handleSubmit}
+              disabled={isSubmitting}
             >
               قدم طلب
             </Button>
