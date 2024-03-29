@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addDays, format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -33,8 +33,6 @@ import {
 } from "../ui/select";
 import { useAlertData } from "@/Contexts/AlertData";
 import { useAlertModal } from "@/Contexts/AlertContext";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { CardData, useCardsContext } from "@/Contexts/CardsContext ";
 
 function BookNowModal() {
@@ -57,59 +55,107 @@ function BookNowModal() {
     deadLineDate: "",
   });
   const { openBookNowModal, setOpenBookNowModal } = useBookNowModal();
-  const { alertData, setAlertData } = useAlertData();
+  const { setAlertData } = useAlertData();
   const { setAlertModal } = useAlertModal();
   const { cards } = useCardsContext();
 
-  const handleSubmit = async () => {
-    const newErrors = {
-      firstName: "",
-      lastName: "",
-      university: "",
-      major: "",
-      phoneNumber: "",
-      description: "",
-      startAtDate: "",
-      deadLineDate: "",
-    };
+  const resetForm = () => {
+    setFirstName("");
+    setLastName("");
+    setUniversity("");
+    setMajor("");
+    setPhoneNumber("");
+    setDescription("");
+    setStartAtDate(undefined);
+    setDeadLineDate(undefined);
+    setErrors(Errors);
+  };
 
+  const Errors = {
+    firstName: "",
+    lastName: "",
+    university: "",
+    major: "",
+    phoneNumber: "",
+    description: "",
+    startAtDate: "",
+    deadLineDate: "",
+  };
+  const setError = () => {
     if (!firstName) {
-      newErrors.firstName = "يرجى إدخال الاسم الأول.";
+      Errors.firstName = "يرجى إدخال الاسم الأول.";
+      return false;
+    } else {
+      Errors.firstName = "";
     }
-
     if (!lastName) {
-      newErrors.lastName = "يرجى إدخال اسم العائلة.";
+      Errors.lastName = "يرجى إدخال اسم العائلة.";
+      return false;
+    } else {
+      Errors.lastName = "";
     }
-
     if (!university) {
-      newErrors.university = "يرجى إدخال اسم الجامعة.";
-    }
-
-    if (!major) {
-      newErrors.major = "يرجى اختيار التخصص.";
+      Errors.university = "يرجى إدخال اسم الجامعة.";
+      return false;
+    } else {
+      Errors.university = "";
     }
 
     if (!phoneNumber) {
-      newErrors.phoneNumber = "يرجى ادخال رقم الهاتف";
+      Errors.phoneNumber = "يرجى ادخال رقم الهاتف";
+      return false;
     } else if (phoneNumber.length < 3) {
-      newErrors.phoneNumber = "يرجى ادخال رقم الهاتف";
+      Errors.phoneNumber = "يرجى ادخال رقم الهاتف";
+      return false;
     } else if (isNaN(parseInt(phoneNumber)) || phoneNumber.length > 10) {
-      newErrors.phoneNumber = "يرجى ادخال رقم الهاتف  وان يكون من 10 خانات";
+      Errors.phoneNumber = "يرجى ادخال رقم الهاتف  وان يكون من 10 خانات";
+      return false;
+    } else {
+      Errors.phoneNumber = "";
     }
-
+    if (!major) {
+      Errors.major = "يرجى اختيار التخصص.";
+      return false;
+    } else {
+      Errors.major = "";
+    }
     if (!description) {
-      newErrors.description = "يرجى إدخال وصف.";
+      Errors.description = "يرجى إدخال وصف.";
+      return false;
+    } else {
+      Errors.description = "";
     }
-
     if (!startAtDate) {
-      newErrors.startAtDate = "يرجى اختيار تاريخ البدء.";
+      Errors.startAtDate = "يرجى اختيار تاريخ البدء.";
+      return false;
+    } else {
+      Errors.startAtDate = "";
     }
-
     if (!deadLineDate) {
-      newErrors.deadLineDate = "يرجى اختيار تاريخ الموعد النهائي.";
+      Errors.deadLineDate = "يرجى اختيار تاريخ الموعد النهائي.";
+      return false;
+    } else {
+      Errors.deadLineDate = "";
     }
+    return true;
+  };
 
-    if (Object.values(newErrors).every((error) => !error)) {
+  useEffect(() => {
+    setError();
+  }, [
+    deadLineDate,
+    startAtDate,
+    description,
+    phoneNumber,
+    major,
+    university,
+    lastName,
+    firstName,
+  ]);
+
+  const handleSubmit = async () => {
+    const checkInputs = setError();
+    if (checkInputs) {
       const newOrder: CreateOrder = {
         firstName,
         lastName,
@@ -131,6 +177,7 @@ function BookNowModal() {
             status: 200,
           });
           setAlertModal(true);
+          resetForm();
         } else {
           setOpenBookNowModal(false);
           setAlertData({
@@ -150,18 +197,8 @@ function BookNowModal() {
         });
         setAlertModal(true);
       }
-
-      setFirstName("");
-      setLastName("");
-      setUniversity("");
-      setMajor("");
-      setPhoneNumber("");
-      setDescription("");
-      setStartAtDate(undefined);
-      setDeadLineDate(undefined);
-      setErrors(newErrors);
     } else {
-      setErrors(newErrors);
+      setErrors(Errors);
     }
   };
 
@@ -169,67 +206,93 @@ function BookNowModal() {
     <Drawer open={openBookNowModal}>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm flex flex-col">
+          <span dir="rtl" className="mt-2 text-2 p-0">
+            الاسم الأول
+          </span>
           <input
             name="firstName"
             value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={(e) => {
+              setFirstName(e.target.value);
+            }}
             placeholder="الاسم الأول"
             dir="rtl"
-            className="mt-2 p-2"
+            className={`p-2 border ${
+              errors.firstName ? "border-red-500" : "border"
+            } radius-25 `}
           />
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.firstName}
           </span>
 
+          <span dir="rtl" className="mt-2 text-s p-0">
+            اسم العائلة
+          </span>
           <input
             name="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             placeholder="اسم العائلة"
             dir="rtl"
-            className="mt-2 p-2"
+            className={`p-2 border ${
+              errors.lastName ? "border-red-500" : "border"
+            } radius-25 `}
           />
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.lastName}
           </span>
 
+          <span dir="rtl" className="mt-2 text-s p-0">
+            اسم الجامعة
+          </span>
           <input
             name="university"
             value={university}
             onChange={(e) => setUniversity(e.target.value)}
             placeholder="اسم الجامعة"
             dir="rtl"
-            className="mt-2 p-2"
+            className={`p-2 border ${
+              errors.university ? "border-red-500" : "border"
+            } radius-25 `}
           />
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.university}
           </span>
 
+          <span dir="rtl" className="mt-2 p-0 text-s">
+            رقم الهاتف
+          </span>
           <input
             name="phoneNumber"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="رقم الهاتف"
             dir="rtl"
-            className="mt-2 p-2"
+            className={`p-2 border ${
+              errors.phoneNumber ? "border-red-500" : "border"
+            } radius-25 `}
           />
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.phoneNumber}
           </span>
 
+          <span dir="rtl" className="mt-2 p-0 text-s">
+            المشروع
+          </span>
           <select
-            className="flex justify-end border border-1 mt-2 p-2"
+            className={`flex justify-end border border-1 p-2 ${
+              errors.major ? "border-red-500" : "border"
+            }`}
             name="major"
             value={major}
             onChange={(e) => setMajor(e.target.value)}
             dir="rtl"
           >
-            {" "}
-            <option value="">اختر المشروع</option>
+            <option value="">نوع المشروع</option>
             {cards.map((card: CardData, index: number) => (
               <option key={index} value={card.text}>
                 {card.text}
-              </option> 
+              </option>
             ))}
             <option value={"آخر"}>آخر</option>
           </select>
@@ -237,14 +300,19 @@ function BookNowModal() {
             {errors.major}
           </span>
 
+          <span dir="rtl" className="mt-2 p-0 text-s">
+            وصف المشروع
+          </span>
           <Textarea
             name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="وصف لطلب المشروع"
             dir="rtl"
-            className="mt-2  p-4 border border-black flex items-center"
-          ></Textarea>
+            className={`border border-black flex items-center ${
+              errors.description ? "border-red-500" : "border"
+            }`}
+          />
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.description}
           </span>

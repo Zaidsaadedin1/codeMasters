@@ -99,9 +99,9 @@ function Homepage() {
         <header className="">
           <ListOfCards />
         </header>
-        <footer className="flex flex-row justify-around bg-white items-center p-3 flex-wrap">
+        <footer className="flex flex-row justify-around bg-white items-center p-2  flex-wrap  ">
           <a
-            className="flex flex-row justify-center text-black items-center font-mono m-2"
+            className="flex flex-row justify-center text-black items-center font-mono m-2 "
             href="https://www.instagram.com/codemastersjo/"
           >
             <IoLogoInstagram />
