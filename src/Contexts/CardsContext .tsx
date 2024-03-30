@@ -67,155 +67,165 @@ interface Props {
 // Define a provider component
 export const CardsProvider: React.FC<Props> = ({ children }) => {
   const [cards] = useState<CardData[]>([
-    { image: <CiMobile3 className="imageIcon" />, text: "IOS تطبيق هاتف" },
-    { image: <CiLaptop className="imageIcon" />, text: "موقع الكتروني" },
     {
-      image: <FcSmartphoneTablet className="imageIcon" />,
+      image: <CiMobile3 className="imageIcon text-blue-400" />,
+      text: "IOS تطبيق هاتف",
+    },
+    {
+      image: <CiLaptop className="imageIcon text-gray-400" />,
+      text: "موقع الكتروني",
+    },
+    {
+      image: <FcSmartphoneTablet className="imageIcon text-green-600" />,
       text: "Android تطبيق هاتف",
     },
     {
-      image: <CiCalculator2 className="imageIcon" />,
+      image: <CiCalculator2 className="imageIcon text-orange-600" />,
       text: "مشروع تخرج تخصص المحاسبة",
     },
-    { image: <GoLaw className="imageIcon" />, text: "مشروع تخرج تخصص القانون" },
     {
-      image: <HiOutlineSpeakerphone className="imageIcon" />,
+      image: <GoLaw className="imageIcon text-gray-600" />,
+      text: "مشروع تخرج تخصص القانون",
+    },
+    {
+      image: <HiOutlineSpeakerphone className="imageIcon text-green-600" />,
       text: "مشروع تخرج تخصص التسويق الالكتروني",
     },
     {
-      image: <FaUserDoctor className="imageIcon" />,
+      image: <FaUserDoctor className="imageIcon text-purple-500	" />,
       text: "مشروع تخرج تخصص الأرشاد النفسي",
     },
     {
-      image: <SiProbot className="imageIcon" />,
+      image: <SiProbot className="imageIcon text-indigo-500	" />,
       text: "مشروع تخرج تخصص الذكاء الاصطناعي",
     },
     {
-      image: <FaNetworkWired className="imageIcon" />,
+      image: <FaNetworkWired className="imageIcon text-cyan-900	" />,
       text: "مشروع تخرج تخصص تقنية المعلومات",
     },
     {
-      image: <LuAppWindow className="imageIcon" />,
+      image: <LuAppWindow className="imageIcon text-lime-500	" />,
       text: "مشروع تخرج تخصص علوم الحاسوب",
     },
     {
-      image: <MdOutlineAppSettingsAlt className="imageIcon" />,
+      image: <MdOutlineAppSettingsAlt className="imageIcon text-yellow-900	" />,
       text: "مشروع تخرج تخصص هندسة البرمجيات",
     },
     {
-      image: <BsHddNetwork className="imageIcon" />,
+      image: <BsHddNetwork className="imageIcon text-amber-700	" />,
       text: "مشروع تخرج تخصص الاتصالات السلكية واللاسلكية",
     },
     {
-      image: <LiaNetworkWiredSolid className="imageIcon" />,
+      image: <LiaNetworkWiredSolid className="imageIcon text-orange-900	" />,
       text: "مشروع تخرج تخصص هندسة الشبكات",
     },
     {
-      image: <CiDatabase className="imageIcon" />,
+      image: <CiDatabase className="imageIcon text-red-800	" />,
       text: "مشروع تخرج تخصص علوم البيانات",
     },
     {
-      image: <RiDatabaseLine className="imageIcon" />,
+      image: <RiDatabaseLine className="imageIcon text-orange-300	" />,
       text: "مشروع تخرج تخصص تحليل البيانات",
     },
     {
-      image: <MdDraw className="imageIcon" />,
+      image: <MdDraw className="imageIcon text-red-500	" />,
       text: "مشروع تخرج تخصص تصميم الجرافيك",
     },
     {
-      image: <CgGames className="imageIcon" />,
+      image: <CgGames className="imageIcon text-red-700	" />,
       text: "مشروع تخرج تخصص تصميم وتطوير الألعاب",
     },
     {
-      image: <GiDoctorFace className="imageIcon" />,
+      image: <GiDoctorFace className="imageIcon text-pink-500	" />,
       text: "مشروع تخرج تخصص علم النفس",
     },
     {
-      image: <FaChild className="imageIcon" />,
+      image: <FaChild className="imageIcon text-rose-600	" />,
       text: "مشروع تخرج تخصص التربية الخاصة",
     },
     {
-      image: <CiPlane className="imageIcon" />,
+      image: <CiPlane className="imageIcon text-lime-400	" />,
       text: "مشروع تخرج تخصص السياحة والسفر",
     },
     {
-      image: <FaChair className="imageIcon" />,
+      image: <FaChair className="imageIcon text-orange-400	" />,
       text: "مشروع تخرج تخصص التصميم الداخلي",
     },
     {
-      image: <FaRegBuilding className="imageIcon" />,
+      image: <FaRegBuilding className="imageIcon text-purple-500	" />,
       text: "مشروع تخرج تخصص الهندسة المعمارية",
     },
     {
-      image: <MdOutlineBuild className="imageIcon" />,
+      image: <MdOutlineBuild className="imageIcon text-indigo-500	" />,
       text: "مشروع تخرج تخصص الهندسة الصناعية",
     },
     {
-      image: <MdOutlineElectricBolt className="imageIcon" />,
+      image: <MdOutlineElectricBolt className="imageIcon text-cyan-500	" />,
       text: "مشروع تخرج تخصص هندسة الكهرباء والالكترونيات",
     },
     {
-      image: <IoIosNuclear className="imageIcon" />,
+      image: <IoIosNuclear className="imageIcon text-teal-600	" />,
       text: "مشروع تخرج تخصص هندسة الطاقة",
     },
     {
-      image: <PiEngineBold className="imageIcon" />,
+      image: <PiEngineBold className="imageIcon text-rose-500	" />,
       text: "مشروع تخرج تخصص الهندسة الميكانيكية",
     },
     {
-      image: <GiTreeBranch className="imageIcon" />,
+      image: <GiTreeBranch className="imageIcon text-teal-800	" />,
       text: "مشروع تخرج تخصص الهندسة البيئية",
     },
     {
-      image: <TbMath className="imageIcon" />,
+      image: <TbMath className="imageIcon text-teal-300	" />,
       text: "مشروع تخرج تخصص الرياضيات",
     },
     {
-      image: <FaRemoveFormat className="imageIcon" />,
+      image: <FaRemoveFormat className="imageIcon text-purple-950	" />,
       text: "مشروع تخرج تخصص الفيزياء",
     },
     {
-      image: <FcBiotech className="imageIcon" />,
+      image: <MdOutlineBiotech className="imageIcon text-purple-300	" />,
+
       text: "مشروع تخرج تخصص الكيمياء",
     },
     {
-      image: <MdOutlineBiotech className="imageIcon" />,
+      image: <FcBiotech className="imageIcon" />,
       text: "مشروع تخرج تخصص علم الاحياء",
     },
     {
-      image: <SiMicrosoftsqlserver className="imageIcon" />,
+      image: <SiMicrosoftsqlserver className="imageIcon text-neutral-700	" />,
       text: "مشروع تخرج تخصص البيولوجيا الدقيقة والجزيئية",
     },
     {
-      image: <FaDna className="imageIcon" />,
+      image: <FaDna className="imageIcon text-yellow-500	" />,
       text: "مشروع تخرج تخصص علم الوراثة",
     },
     {
-      image: <GiStonePile className="imageIcon" />,
+      image: <GiStonePile className="imageIcon text-lime-100	" />,
       text: "مشروع تخرج تخصص الجيولوجيا",
     },
     {
-      image: <GiWorld className="imageIcon" />,
+      image: <GiWorld className="imageIcon text-lime-800	" />,
       text: "مشروع تخرج تخصص الجغرافيا",
     },
     {
-      image: <FaRegChartBar className="imageIcon" />,
+      image: <FaRegChartBar className="imageIcon text-violet-950	" />,
       text: "مشروع تخرج تخصص علم الاقتصاد",
     },
     {
-      image: <PiSigmaThin className="imageIcon" />,
+      image: <PiSigmaThin className="imageIcon text-teal-700	" />,
       text: "مشروع تخرج تخصص علم الإحصاء",
     },
     {
-      image: <GiRoundTable className="imageIcon" />,
+      image: <GiRoundTable className="imageIcon text-red-500	" />,
       text: "مشروع تخرج تخصص العلوم السياسية",
     },
     {
-      image: <RiSpeakLine className="imageIcon" />,
+      image: <RiSpeakLine className="imageIcon text-red-700	" />,
       text: "مشروع تخرج تخصص علم الاجتماع",
     },
     {
-      image: <GiFilmSpool className="imageIcon" />,
+      image: <GiFilmSpool className="imageIcon text-rose-500	" />,
       text: "مشروع تخرج تخصص الصحافة والإعلام",
     },
   ]);
