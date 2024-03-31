@@ -1,0 +1,40 @@
+.drawer-content {
+    
+    max-width: 600px;
+    min-width: 200px;
+    max-height: 100vh;
+    min-height: 200px;
+    overflow: auto;
+    padding: 4px;
+}
+
+/* Style the scrollbar */
+.drawer-content::-webkit-scrollbar {
+    width: 6px; /* Set the width of the scrollbar */
+    height: 6px; /* Set the height of the scrollbar for horizontal scrolling */
+    background-color: transparent; /* Set the background color of the scrollbar track */
+}
+
+.drawer-content::-webkit-scrollbar-thumb {
+    background-color: rgb(62, 61, 61); /* Set the color of the scrollbar thumb */
+    border-radius: 4px; /* Set the border-radius of the scrollbar thumb */
+}
+
+.drawer-content::-webkit-scrollbar-track {
+    background-color: transparent; /* Set the background color of the scrollbar track */
+}
+
+/* Add padding to the scrollbar */
+.drawer-content::-webkit-scrollbar {
+    padding: 10px; /* Set the padding for the scrollbar */
+}
+
+/* Responsive Styles */
+@media only screen and (max-width: 768px) {
+    .drawer-content {
+        max-width: 90%;
+        min-width: 90%;
+        max-height: 90vh;
+        min-height: 150px; /* Adjust min-height as needed */
+    }
+}

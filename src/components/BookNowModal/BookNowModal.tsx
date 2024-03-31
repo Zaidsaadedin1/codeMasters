@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+import "./BookNowModal.css"
 import { addDays, format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -60,6 +61,7 @@ function BookNowModal() {
   const { cards } = useCardsContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Use functional updates with useState
   const resetForm = () => {
     setFirstName("");
     setLastName("");
@@ -69,76 +71,28 @@ function BookNowModal() {
     setDescription("");
     setStartAtDate(undefined);
     setDeadLineDate(undefined);
-    setErrors(Errors);
+    setErrors(prevErrors => ({ ...prevErrors, ...errors }));
   };
 
-  const Errors = {
-    firstName: "",
-    lastName: "",
-    university: "",
-    major: "",
-    phoneNumber: "",
-    description: "",
-    startAtDate: "",
-    deadLineDate: "",
-  };
   const setError = () => {
-    if (!firstName) {
-      Errors.firstName = "يرجى إدخال الاسم الأول.";
-      return false;
-    } else {
-      Errors.firstName = "";
-    }
-    if (!lastName) {
-      Errors.lastName = "يرجى إدخال اسم العائلة.";
-      return false;
-    } else {
-      Errors.lastName = "";
-    }
-    if (!university) {
-      Errors.university = "يرجى إدخال اسم الجامعة.";
-      return false;
-    } else {
-      Errors.university = "";
-    }
-
-    if (!phoneNumber) {
-      Errors.phoneNumber = "يرجى ادخال رقم الهاتف";
-      return false;
-    } else if (phoneNumber.length < 3) {
-      Errors.phoneNumber = "يرجى ادخال رقم الهاتف";
-      return false;
-    } else if (isNaN(parseInt(phoneNumber)) || phoneNumber.length > 10) {
-      Errors.phoneNumber = "يرجى ادخال رقم الهاتف  وان يكون من 10 خانات";
-      return false;
-    } else {
-      Errors.phoneNumber = "";
-    }
-    if (!major) {
-      Errors.major = "يرجى اختيار التخصص.";
-      return false;
-    } else {
-      Errors.major = "";
-    }
-    if (!description) {
-      Errors.description = "يرجى إدخال وصف.";
-      return false;
-    } else {
-      Errors.description = "";
-    }
-    if (!startAtDate) {
-      Errors.startAtDate = "يرجى اختيار تاريخ البدء.";
-      return false;
-    } else {
-      Errors.startAtDate = "";
-    }
-    if (!deadLineDate) {
-      Errors.deadLineDate = "يرجى اختيار تاريخ الموعد النهائي.";
-      return false;
-    } else {
-      Errors.deadLineDate = "";
-    }
-    return true;
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      firstName: !firstName ? "يرجى إدخال الاسم الأول." : "",
+      lastName: !lastName ? "يرجى إدخال اسم العائلة." : "",
+      university: !university ? "يرجى إدخال اسم الجامعة." : "",
+      phoneNumber:
+        !phoneNumber
+          ? "يرجى ادخال رقم الهاتف"
+          : phoneNumber.length < 3
+            ? "يرجى ادخال رقم الهاتف"
+            : isNaN(parseInt(phoneNumber)) || phoneNumber.length > 10
+              ? "يرجى ادخال رقم الهاتف  وان يكون من 10 خانات"
+              : "",
+      major: !major ? "يرجى اختيار التخصص." : "",
+      description: !description ? "يرجى إدخال وصف." : "",
+      startAtDate: !startAtDate ? "يرجى اختيار تاريخ البدء." : "",
+      deadLineDate: !deadLineDate ? "يرجى اختيار تاريخ الموعد النهائي." : "",
+    }));
   };
 
   useEffect(() => {
@@ -154,9 +108,10 @@ function BookNowModal() {
     firstName,
   ]);
 
+
   const handleSubmit = async () => {
-    const checkInputs = setError();
-    if (checkInputs) {
+    const hasErrors = Object.values(errors).some(value => value !== '');
+    if (!hasErrors) {
       setIsSubmitting(true);
       const newOrder: CreateOrder = {
         firstName,
@@ -203,14 +158,14 @@ function BookNowModal() {
         setIsSubmitting(false);
       }
     } else {
-      setErrors(Errors);
+      setErrors(errors);
     }
   };
 
   return (
     <Drawer open={openBookNowModal}>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm flex flex-col">
+        <div className="drawer-content mx-auto max-w-sm flex flex-col">
           <span dir="rtl" className="mt-2 text-2 p-0">
             الاسم الأول
           </span>
@@ -222,9 +177,8 @@ function BookNowModal() {
             }}
             placeholder="الاسم الأول"
             dir="rtl"
-            className={`p-2 border ${
-              errors.firstName ? "border-red-500" : "border"
-            } radius-25 `}
+            className={`p-2 border ${errors.firstName ? "border-red-500" : "border"
+              } radius-25 `}
           />
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.firstName}
@@ -239,9 +193,8 @@ function BookNowModal() {
             onChange={(e) => setLastName(e.target.value)}
             placeholder="اسم العائلة"
             dir="rtl"
-            className={`p-2 border ${
-              errors.lastName ? "border-red-500" : "border"
-            } radius-25 `}
+            className={`p-2 border ${errors.lastName ? "border-red-500" : "border"
+              } radius-25 `}
           />
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.lastName}
@@ -256,9 +209,8 @@ function BookNowModal() {
             onChange={(e) => setUniversity(e.target.value)}
             placeholder="اسم الجامعة"
             dir="rtl"
-            className={`p-2 border ${
-              errors.university ? "border-red-500" : "border"
-            } radius-25 `}
+            className={`p-2 border ${errors.university ? "border-red-500" : "border"
+              } radius-25 `}
           />
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.university}
@@ -273,9 +225,8 @@ function BookNowModal() {
             onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="رقم الهاتف"
             dir="rtl"
-            className={`p-2 border ${
-              errors.phoneNumber ? "border-red-500" : "border"
-            } radius-25 `}
+            className={`p-2 border ${errors.phoneNumber ? "border-red-500" : "border"
+              } radius-25 `}
           />
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.phoneNumber}
@@ -285,9 +236,8 @@ function BookNowModal() {
             المشروع
           </span>
           <select
-            className={`flex justify-end border border-1 p-2 ${
-              errors.major ? "border-red-500" : "border"
-            }`}
+            className={`flex justify-end border border-1 p-2 ${errors.major ? "border-red-500" : "border"
+              }`}
             name="major"
             value={major}
             onChange={(e) => setMajor(e.target.value)}
@@ -314,9 +264,8 @@ function BookNowModal() {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="وصف لطلب المشروع"
             dir="rtl"
-            className={`border border-black flex items-center ${
-              errors.description ? "border-red-500" : "border"
-            }`}
+            className={`border border-black flex items-center ${errors.description ? "border-red-500" : "border"
+              }`}
           />
           <span dir="rtl" className="text-red-500 text-xs">
             {errors.description}

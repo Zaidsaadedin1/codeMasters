@@ -11,6 +11,7 @@ import { useAlertModal } from "@/Contexts/AlertContext";
 import { useAlertData } from "@/Contexts/AlertData";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { CiFacebook } from "react-icons/ci";
 
 function Homepage() {
   const { openBookNowModal } = useBookNowModal();
@@ -115,7 +116,7 @@ function Homepage() {
             className="flex flex-row justify-center text-black items-center font-mono m-2"
             href="https://www.facebook.com/Codemastersjo/"
           >
-            <FaFacebook />
+            <CiFacebook />
             codemastersjo
           </a>
         </footer>
